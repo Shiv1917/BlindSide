@@ -540,4 +540,26 @@ int main() {
         worst = std::max(worst, std::abs(Cx(iq[0], iq[1]) - rf.rx[n]));
     }
     std::cout << "Read-back max difference: " << worst << " (float32 rounding only)\n";
+
+    {
+        // easy SC: no impairment except noise
+        SimConfig ct; ct.mode = "SC"; ct.snrDb = 25.0;
+        ct.f[0] = 0.0; ct.theta[0] = 0.0; ct.eps[0] = 0.0;
+        SimResult rt = simulate(symA, symB, ct);
+        std::string d = dir + "/sc_clean";
+        std::filesystem::create_directories(d);
+        writeIq(d + "/iq.bin", rt.rx);
+        writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
+        std::cout << "SC clean scenario written to " << d << "\n";
+    }
+    {
+        // hard SC: CFO + phase + fractional delay + noise, still single carrier
+        SimConfig ct; ct.mode = "SC"; ct.snrDb = 25.0;
+        SimResult rt = simulate(symA, symB, ct);
+        std::string d = dir + "/sc";
+        std::filesystem::create_directories(d);
+        writeIq(d + "/iq.bin", rt.rx);
+        writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
+        std::cout << "SC impaired scenario written to " << d << "\n";
+    }
 }
