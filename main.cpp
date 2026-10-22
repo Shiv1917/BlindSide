@@ -541,7 +541,7 @@ int main() {
     }
     std::cout << "Read-back max difference: " << worst << " (float32 rounding only)\n";
 
-    {
+        {
         // easy SC: no impairment except noise
         SimConfig ct; ct.mode = "SC"; ct.snrDb = 25.0;
         ct.f[0] = 0.0; ct.theta[0] = 0.0; ct.eps[0] = 0.0;
@@ -549,17 +549,42 @@ int main() {
         std::string d = dir + "/sc_clean";
         std::filesystem::create_directories(d);
         writeIq(d + "/iq.bin", rt.rx);
+        writeIq(d + "/symbols_A.bin", symA);
         writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
         std::cout << "SC clean scenario written to " << d << "\n";
     }
     {
-        // hard SC: CFO + phase + fractional delay + noise, still single carrier
+        // hard SC: CFO + phase + fractional delay + noise
         SimConfig ct; ct.mode = "SC"; ct.snrDb = 25.0;
         SimResult rt = simulate(symA, symB, ct);
         std::string d = dir + "/sc";
         std::filesystem::create_directories(d);
         writeIq(d + "/iq.bin", rt.rx);
+        writeIq(d + "/symbols_A.bin", symA);
         writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
         std::cout << "SC impaired scenario written to " << d << "\n";
+    }
+    {
+        // High-SNR CnC to prove JAMLSE works
+        SimConfig ct; ct.mode = "CnC"; ct.pdDb = 4.0; ct.snrDb = 20.0;
+        SimResult rt = simulate(symA, symB, ct);
+        std::string d = dir + "/cnc_clean";
+        std::filesystem::create_directories(d);
+        writeIq(d + "/iq.bin", rt.rx);
+        writeIq(d + "/symbols_A.bin", symA);
+        writeIq(d + "/symbols_B.bin", symB);
+        writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
+        std::cout << "CnC clean (20dB SNR) written to " << d << "\n";
+    }
+        for (int snr = 8; snr <= 20; snr += 2) {
+        SimConfig ct; ct.mode = "CnC"; ct.pdDb = 4.0; ct.snrDb = snr;
+        SimResult rt = simulate(symA, symB, ct);
+        std::string d = dir + "/cnc_" + std::to_string(snr) + "db";
+        std::filesystem::create_directories(d);
+        writeIq(d + "/iq.bin", rt.rx);
+        writeIq(d + "/symbols_A.bin", symA);
+        writeIq(d + "/symbols_B.bin", symB);
+        writeTruthJson(d + "/truth.json", ct, rt, msgA, msgB, symA.size(), rt.rx.size());
+        std::cout << "CnC " << snr << "dB written to " << d << "\n";
     }
 }

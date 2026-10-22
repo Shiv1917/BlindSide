@@ -1,0 +1,21 @@
+c++  -I. -o test_frac_delay frac_delay.cpp frontend.cpp cfo.cpp fft.cpp truth.cpp rx_bit_chain.cpp test_frac_delay.cpp
+In file included from frontend.cpp:1:
+In file included from ./frontend.hpp:4:
+./rx_bit_chain.hpp:23:1: warning: inline variables are a C++17 extension [-Wc++17-extensions]
+   23 | inline const std::vector<int> DEFAULT_TAPS = {18, 23};
+      | ^
+1 warning generated.
+truth.cpp:58:9: warning: 'if' initialization statements are a C++17 extension [-Wc++17-extensions]
+   58 |     if (auto pos = s.find("\"scramblerTaps\":"); pos != std::string::npos) {
+      |         ^
+1 warning generated.
+In file included from rx_bit_chain.cpp:1:
+./rx_bit_chain.hpp:23:1: warning: inline variables are a C++17 extension [-Wc++17-extensions]
+   23 | inline const std::vector<int> DEFAULT_TAPS = {18, 23};
+      | ^
+1 warning generated.
+In file included from test_frac_delay.cpp:1:
+./rx_bit_chain.hpp:23:1: warning: inline variables are a C++17 extension [-Wc++17-extensions]
+   23 | inline const std::vector<int> DEFAULT_TAPS = {18, 23};
+      | ^
+1 warning generated.

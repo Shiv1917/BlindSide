@@ -1,0 +1,15 @@
+[DEBUG] N_SYM=164071 TOTAL_STEPS=164073 N_STATE=256 mem_est=240MB
+[DEBUG] |y_mf[0]|=1.94905 mf_gain=2.58068 |init_CA|=2.18255 |init_CB|=1.3771
+[DEBUG] Traceback arrays allocated (240 MB)
+  [sym 0] entering iteration
+  [sym 1] entering iteration
+  [sym 2] entering iteration
+  [sym 3] entering iteration
+  [sym 4] entering iteration
+  [sym 4] reachable=256 best_metric=4.56221
+  [sym 10] entering iteration
+  [sym 10] reachable=256 best_metric=22.5515
+  [sym 20] entering iteration
+  [sym 20] reachable=256 best_metric=54.4706
+[DEBUG] Best final state: 76 metric=461211
+[DEBUG] Traceback complete
